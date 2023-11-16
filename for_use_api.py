@@ -6,7 +6,6 @@ import re
 from dataset import get_data
 
 
-
 def get_response(args, user_request, max_len, temp):
     responese = openai.Completion.create(
         engine = args.model_name,
@@ -37,7 +36,6 @@ def convert_to_submit_file(api_result: list = []):
                 
 
 def main(args):
-    print(args)
     with open("openai_api_key.txt", "r") as f:
         openai.api_key = f.readline()
         test_examples = get_data(args.data)
@@ -60,16 +58,14 @@ def main(args):
                 Your answer format should be like this:
                 Answer: c
                 """
-
                 ques = problem["Problem"]
-                max_len = 2000
+                max_len = 20
                 temp = 0.2
                 user_request = prompt + ques
                 responese = {}
                 if curr_indx > last_indx:
                     while 'id' not in responese:
                         try:
-                            print("try")
                             t1 = time.time()
                             responese = get_response(args, user_request, max_len, temp)
                             #print(user_request)
@@ -102,5 +98,4 @@ if __name__ == "__main__":
 	)
 
     args = parser.parse_args()
-    print(args)
     main(args)
